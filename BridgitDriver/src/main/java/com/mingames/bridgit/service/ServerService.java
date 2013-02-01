@@ -17,10 +17,10 @@ import java.util.Map;
  */
 public class ServerService {
 
-    private BridgitServer server;
+    private BridgitServerConnector server = BridgitServerConnector.getInstance();
 
-    public List<WebElement> sendFindElementCommand(BridgitCommand command) {
-        Object object = server.sendRequest(command);
+    public List<WebElement> sendFindElementCommand(BridgItCommand command, String url) {
+        Object object = server.sendRequest(command, url);
         return parseObjectAsWebElements(object);
     }
 
@@ -30,25 +30,16 @@ public class ServerService {
         if (object != null) {
             parser.addTypeHint("BridgitWebElement[]", BridgitWebElement.class);
             List<Map> result1 = parser.parse(List.class, object.toString());
-            for (Map map : result1) {
+            for (Map path : result1) {
                 BridgitWebElement element = new BridgitWebElement();
-                element.setAttributes(parseField(map, "attributes"));
+                element.setFullPath(path.get("fullpath").toString());
                 result.add(element);
             }
         }
         return result;
     }
 
-    private Map parseField(Map map, String attributeName) {
-        List list = (List) map.get(attributeName);
-        if (list.size() > 0) {
-            Map<String, String> fieldMap = (Map<String, String>) list.get(0);
-            return fieldMap;
-        }
-        return null;
-    }
-
-    public Object getObject(BridgitCommand command) {
-        return server.sendRequest(command);
+    public Object getObject(BridgItCommand command, String url) {
+        return server.sendRequest(command, url);
     }
 }
