@@ -11,6 +11,7 @@ import java.util.Arrays;
  */
 public class BridgItCommand {
 
+    public static final String AUTH = "AUTH";
     public static final String FIND = "FIND";
     public static final String GET_TITLE = "GET_TITLE";
     public static final String GET_URL = "GET_URL";
@@ -67,9 +68,9 @@ public class BridgItCommand {
 
     @Override
     public String toString() {
-        return "BridgItCommand{" +
-                "function='" + function + '\'' +
-                ", param=" + (param == null ? null : Arrays.asList(param)) +
-                '}';
+        return "{" +
+                "\"function\":\"" + function + '"' +
+                ", \"param\":\"" + (param == null ? null : Arrays.asList(param)) +
+                "\"}";
     }
 }

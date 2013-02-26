@@ -19,10 +19,10 @@ import java.util.Set;
 public class BridgitDriver implements WebDriver {
 
     private ServerService serverService = new ServerService();
-    private String url;
 
-    public void get(String s) {
-        this.url = s;
+
+    public void get(String url) {
+
     }
 
     public String getCurrentUrl() {
@@ -41,7 +41,7 @@ public class BridgitDriver implements WebDriver {
         BridgItCommand command = new BridgItCommand();
         command.setFunction(BridgItCommand.FIND);
         command.setParam(by.toString());
-        List<WebElement> webElements = serverService.sendFindElementCommand(command, url);
+        List<WebElement> webElements = serverService.sendFindElementCommand(command);
         for (WebElement webElement : webElements) {
             BridgitWebElement bridgitWebElement = (BridgitWebElement) webElement;
             bridgitWebElement.setFindBy(by);
@@ -86,7 +86,7 @@ public class BridgitDriver implements WebDriver {
     }
 
     public String execute(BridgItCommand command) {
-        Object object = serverService.getObject(command, url);
+        Object object = serverService.getObject(command);
         return object != null ? object.toString() : null;
     }
 }

@@ -12,6 +12,6 @@ public class BridgitServerConnectorTest {
     public void shouldSendRequest() {
         BridgitServerConnector connector = BridgitServerConnector.getInstance();
         BridgItCommand command = new BridgItCommand();
-        connector.sendRequest(command, "someurl");
+        connector.sendRequest(command);
     }
 }

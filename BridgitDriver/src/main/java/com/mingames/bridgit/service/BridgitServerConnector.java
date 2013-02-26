@@ -1,11 +1,10 @@
 package com.mingames.bridgit.service;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import java.io.IOException;
 
@@ -19,10 +18,13 @@ public class BridgitServerConnector {
 
     private static BridgitServerConnector instance;
     private final HttpClient client;
+    private String hostUrl = "http://localhost:8081/driver";
 
     private BridgitServerConnector() {
         client = new HttpClient();
-
+        GetMethod method = new GetMethod(hostUrl);
+        method.setQueryString(new NameValuePair[]{new NameValuePair("command", "auth")});
+        executeMethod(method, new Object());
     }
 
     public static BridgitServerConnector getInstance() {
@@ -32,18 +34,24 @@ public class BridgitServerConnector {
         return instance;
     }
 
-    public Object sendRequest(BridgItCommand command, String url) {
-        GetMethod method = new GetMethod(url);
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-                new DefaultHttpMethodRetryHandler(3, false));
-        method.getParams().setParameter("data", command);
+    public Object sendRequest(BridgItCommand command) {
+        GetMethod method = new GetMethod(hostUrl);
+        method.setQueryString(new NameValuePair[]{
+                new NameValuePair("command", "action"),
+                new NameValuePair("data", command.toString())}
+        );
         Object result = null;
+        result = executeMethod(method, result);
+        return result;
+    }
+
+    private Object executeMethod(GetMethod method, Object result) {
         try {
             int statusCode = client.executeMethod(method);
             if (statusCode != HttpStatus.SC_OK) {
                 System.err.println("Method failed: " + method.getStatusLine());
             }
-            result = method.getResponseBody();
+            result = method.getResponseBodyAsString();
         } catch (HttpException e) {
             System.err.println("Fatal protocol violation: " + e.getMessage());
             e.printStackTrace();

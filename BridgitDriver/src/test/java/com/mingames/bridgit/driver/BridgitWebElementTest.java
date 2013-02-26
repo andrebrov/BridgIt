@@ -19,7 +19,6 @@ import static org.testng.AssertJUnit.*;
  * User: andrebrov
  * Date: 01.02.13
  * Time: 13:24
- * To change this template use File | Settings | File Templates.
  */
 public class BridgitWebElementTest {
 

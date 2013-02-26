@@ -19,8 +19,8 @@ public class ServerService {
 
     private BridgitServerConnector server = BridgitServerConnector.getInstance();
 
-    public List<WebElement> sendFindElementCommand(BridgItCommand command, String url) {
-        Object object = server.sendRequest(command, url);
+    public List<WebElement> sendFindElementCommand(BridgItCommand command) {
+        Object object = server.sendRequest(command);
         return parseObjectAsWebElements(object);
     }
 
@@ -39,7 +39,7 @@ public class ServerService {
         return result;
     }
 
-    public Object getObject(BridgItCommand command, String url) {
-        return server.sendRequest(command, url);
+    public Object getObject(BridgItCommand command) {
+        return server.sendRequest(command);
     }
 }

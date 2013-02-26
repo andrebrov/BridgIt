@@ -15,7 +15,6 @@ import java.util.Collections;
 
 import static com.mingames.bridgit.service.BridgItCommand.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -56,20 +55,20 @@ public class BridgitDriverTest {
                 BridgitWebElement element = new BridgitWebElement();
                 return Collections.singletonList(element);
             }
-        }).when(serverService).sendFindElementCommand((BridgItCommand) any(), eq(URL));
+        }).when(serverService).sendFindElementCommand((BridgItCommand) any());
         doAnswer(new Answer() {
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 Object[] arguments = invocation.getArguments();
                 commands[0] = (BridgItCommand) arguments[0];
                 return "somesource";
             }
-        }).when(serverService).getObject((BridgItCommand) any(), eq(URL));
+        }).when(serverService).getObject((BridgItCommand) any());
     }
 
     @Test
     public void shouldGetCurrentUrl() {
         driver.getCurrentUrl();
-        verify(serverService).getObject((BridgItCommand) any(), eq(URL));
+        verify(serverService).getObject((BridgItCommand) any());
         BridgItCommand command = commands[0];
         assertEquals("Wrong command", command.getFunction(), GET_URL);
     }
@@ -77,7 +76,7 @@ public class BridgitDriverTest {
     @Test
     public void shouldGetTitle() {
         driver.getTitle();
-        verify(serverService).getObject((BridgItCommand) any(), eq(URL));
+        verify(serverService).getObject((BridgItCommand) any());
         BridgItCommand command = commands[0];
         assertEquals("Wrong command", command.getFunction(), GET_TITLE);
     }
@@ -85,7 +84,7 @@ public class BridgitDriverTest {
     @Test(dataProvider = "data")
     public void shouldSendFindByCommand(By by, String commandName) {
         WebElement element = driver.findElement(by);
-        verify(serverService).sendFindElementCommand((BridgItCommand) any(), eq(URL));
+        verify(serverService).sendFindElementCommand((BridgItCommand) any());
         BridgItCommand command = commands[0];
         assertEquals("Wrong command", commandName, command.getFunction());
         assertEquals("Wrong command param", by.toString(), command.getParam()[0]);
@@ -95,7 +94,7 @@ public class BridgitDriverTest {
     @Test(dataProvider = "data")
     public void shouldSendFindByCommandForList(By by, String commandName) {
         WebElement element = driver.findElement(by);
-        verify(serverService).sendFindElementCommand((BridgItCommand) any(), eq(URL));
+        verify(serverService).sendFindElementCommand((BridgItCommand) any());
         BridgItCommand command = commands[0];
         assertEquals("Wrong command", commandName, command.getFunction());
         assertEquals("Wrong command param", by.toString(), command.getParam()[0]);
@@ -105,7 +104,7 @@ public class BridgitDriverTest {
     @Test
     public void shouldGetPageSource() {
         driver.getPageSource();
-        verify(serverService).getObject((BridgItCommand) any(), eq(URL));
+        verify(serverService).getObject((BridgItCommand) any());
         BridgItCommand command = commands[0];
         assertEquals("Wrong command", command.getFunction(), GET_SOURCE);
     }
@@ -115,7 +114,7 @@ public class BridgitDriverTest {
         BridgItCommand commandToSend = new BridgItCommand();
         commandToSend.setFunction(GET_SOURCE);
         String executionResult = driver.execute(commandToSend);
-        verify(serverService).getObject((BridgItCommand) any(), eq(URL));
+        verify(serverService).getObject((BridgItCommand) any());
         BridgItCommand command = commands[0];
         assertEquals("Wrong execution result", "somesource", executionResult);
         assertEquals("Wrong command send", commandToSend, command);

@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static com.mingames.bridgit.driver.BridgitDriverTest.URL;
 import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.*;
 
@@ -18,7 +17,6 @@ import static org.testng.AssertJUnit.*;
  * User: andrebrov
  * Date: 31.01.13
  * Time: 17:03
- * To change this template use File | Settings | File Templates.
  */
 public class ServerServiceTest {
 
@@ -36,15 +34,15 @@ public class ServerServiceTest {
     public void shouldSendFindElementCommand() {
         BridgItCommand command = new BridgItCommand();
         command.setFunction(BridgItCommand.GET_URL);
-        serverService.sendFindElementCommand(command, URL);
-        verify(server).sendRequest(command, URL);
+        serverService.sendFindElementCommand(command);
+        verify(server).sendRequest(command);
     }
 
 
     @Test
     public void shouldReturnNotNullListByFindElementCommand() {
         BridgItCommand command = new BridgItCommand();
-        List<WebElement> webElements = serverService.sendFindElementCommand(command, URL);
+        List<WebElement> webElements = serverService.sendFindElementCommand(command);
         assertNotNull("Null list was returned", webElements);
     }
 
@@ -55,8 +53,8 @@ public class ServerServiceTest {
         By someId = By.id("someId");
         command.setParam(someId.toString());
         String value = "[{\"fullpath\":\"someId\"}]";
-        when(server.sendRequest(command, URL)).thenReturn(value);
-        List<WebElement> webElements = serverService.sendFindElementCommand(command, URL);
+        when(server.sendRequest(command)).thenReturn(value);
+        List<WebElement> webElements = serverService.sendFindElementCommand(command);
         assertTrue("List is empty", webElements.size() > 0);
         BridgitWebElement webElement = (BridgitWebElement) webElements.get(0);
         assertEquals("Wrong fullpath", "someId", webElement.getFullPath());
@@ -65,8 +63,8 @@ public class ServerServiceTest {
     @Test
     public void shouldGetObject() {
         BridgItCommand command = new BridgItCommand();
-        serverService.getObject(command, URL);
-        verify(server).sendRequest(command, URL);
+        serverService.getObject(command);
+        verify(server).sendRequest(command);
     }
 
 }
