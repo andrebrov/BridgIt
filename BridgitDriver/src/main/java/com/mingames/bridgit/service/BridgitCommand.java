@@ -11,7 +11,6 @@ import java.util.Arrays;
  */
 public class BridgItCommand {
 
-    public static final String AUTH = "AUTH";
     public static final String FIND = "FIND";
     public static final String GET_TITLE = "GET_TITLE";
     public static final String GET_URL = "GET_URL";

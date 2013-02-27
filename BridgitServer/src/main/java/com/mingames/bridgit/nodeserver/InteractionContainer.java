@@ -28,7 +28,7 @@ public class InteractionContainer {
         int counter = 0;
         while (data == null || counter < 1000) {
             counter++;
-            Thread.sleep(10);
+            Thread.sleep(5);
         }
         String temp = this.data;
         this.data = null;

@@ -3,9 +3,23 @@
 <head>
     <title>Test</title>
     <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="jquery.dom.path.js"></script>
+    <script type="text/javascript" src="jquery.xpath.js"></script>
     <script type="text/javascript" src="bridgit.js"></script>
+    <script type="text/javascript">
+        $(document).ready(
+                function () {
+                    $("#Test").click(function () {
+                        alert("clicked");
+                    });
+                });
+    </script>
 </head>
 <body>
 <textarea id="logOutput" rows="30" cols="40"></textarea>
+
+<div id="Test" style="width: 50px;height: 100px;" class="testClass"></div>
+<input type="text" id="textInput" name="testName"/>
+<a href="http://scrumtrek.ru">someLink</a>
 </body>
 </html>

@@ -45,6 +45,7 @@ public class BridgitDriver implements WebDriver {
         for (WebElement webElement : webElements) {
             BridgitWebElement bridgitWebElement = (BridgitWebElement) webElement;
             bridgitWebElement.setFindBy(by);
+            bridgitWebElement.setDriver(this);
         }
         return webElements;
     }
