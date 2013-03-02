@@ -67,7 +67,8 @@ public class BridgitWebElement implements WebElement {
     }
 
     public boolean isSelected() {
-        return Boolean.parseBoolean(getAttribute("selected"));
+        String selected = getAttribute("selected");
+        return selected != null;
     }
 
     public boolean isEnabled() {
