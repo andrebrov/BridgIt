@@ -6,7 +6,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.mingames.bridgit.service.BridgItCommand.*;
@@ -82,14 +81,13 @@ public class BridgitWebElement implements WebElement {
         return driver.execute(command);
     }
 
-    //TODO: to be implemented
     public List<WebElement> findElements(By by) {
-        return Collections.emptyList();
+        return driver.findElements(this.getFullPath(), by);
     }
 
-    //TODO: to be implemented
     public WebElement findElement(By by) {
-        return null;
+        List<WebElement> elements = findElements(by);
+        return elements.isEmpty() ? null : elements.get(0);
     }
 
     public boolean isDisplayed() {

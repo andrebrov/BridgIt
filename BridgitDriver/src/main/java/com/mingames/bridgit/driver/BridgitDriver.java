@@ -90,4 +90,17 @@ public class BridgitDriver implements WebDriver {
         Object object = serverService.getObject(command);
         return object != null ? object.toString() : null;
     }
+
+    public List<WebElement> findElements(String fullPath, By by) {
+        BridgItCommand command = new BridgItCommand();
+        command.setFunction(BridgItCommand.FIND);
+        command.setParam(by.toString(), fullPath);
+        List<WebElement> webElements = serverService.sendFindElementCommand(command);
+        for (WebElement webElement : webElements) {
+            BridgitWebElement bridgitWebElement = (BridgitWebElement) webElement;
+            bridgitWebElement.setFindBy(by);
+            bridgitWebElement.setDriver(this);
+        }
+        return webElements;
+    }
 }

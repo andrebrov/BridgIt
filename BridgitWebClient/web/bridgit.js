@@ -35,7 +35,13 @@ var process = function (data) {
             result = document.body.innerHTML;
             break;
         case "FIND":
-            result = objToString(getObject(command.param));
+            if (command.param.indexOf(",") < 0) {
+                result = objToString(getObject(command.param));
+            } else {
+                var params = parseComplexParam(command.param);
+                var obj = getObjectFromObject(params[1], params[0]);
+                result = objToString(obj);
+            }
             break;
         case "CLICK":
             result = getObject(command.param).trigger('click');
@@ -60,7 +66,7 @@ var process = function (data) {
             result = obj.attr(params[1]).toString();
             break;
         case "GET_TEXT":
-            result = getObject(command.param).val();
+            result = getObject(command.param).text();
             break;
         case "GET_LOCATION":
             pos = getObject(command.param).position();
@@ -109,6 +115,41 @@ var getObject = function (path) {
             break;
         case path.indexOf("By.partialLinkText") > 0:
             resultObject = $('a').filter(function (index) {
+                return $(this).text().indexOf(extractLocator(path, "By.partialLinkText")) > 0;
+            });
+            break;
+    }
+    return resultObject;
+}
+
+var getObjectFromObject = function (startObj, path) {
+    var resultObject;
+    switch (true) {
+        case path.indexOf("By.id") > 0:
+            resultObject = $(startObj).find("#" + extractLocator(path, "By.id"));
+            break;
+        case path.indexOf("By.className") > 0:
+            resultObject = $(startObj).find("." + extractLocator(path, "By.className"));
+            break;
+        case path.indexOf("By.tagName") > 0:
+            resultObject = $(startObj).find(extractLocator(path, "By.tagName"));
+            break;
+        case path.indexOf("By.xpath") > 0:
+            resultObject = $(startObj).find(document.body).xpath(extractLocator(path, "By.xpath"));
+            break;
+        case path.indexOf("By.selector") > 0:
+            resultObject = $(startObj).find(extractLocator(path, "By.selector"));
+            break;
+        case path.indexOf("By.name") > 0:
+            resultObject = $(startObj).find("*[name=" + extractLocator(path, "By.name") + "]");
+            break;
+        case path.indexOf("By.linkText") > 0:
+            resultObject = $(startObj).find('a').filter(function (index) {
+                return $(this).text() === extractLocator(path, "By.linkText");
+            });
+            break;
+        case path.indexOf("By.partialLinkText") > 0:
+            resultObject = $(startObj).find('a').filter(function (index) {
                 return $(this).text().indexOf(extractLocator(path, "By.partialLinkText")) > 0;
             });
             break;

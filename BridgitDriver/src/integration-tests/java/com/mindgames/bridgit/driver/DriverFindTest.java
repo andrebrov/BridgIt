@@ -71,4 +71,12 @@ public class DriverFindTest {
         BridgitWebElement element = (BridgitWebElement) driver.findElement(By.partialLinkText("Link"));
         assertNotNull(element.getFullPath());
     }
+
+    @Test
+    public void shouldFindByFromElement() {
+        BridgitDriver driver = new BridgitDriver();
+        BridgitWebElement element = (BridgitWebElement) driver.findElement(By.tagName("body"));
+        BridgitWebElement logOutput = (BridgitWebElement) element.findElement(By.cssSelector("#logOutput"));
+        assertNotNull(logOutput.getFullPath());
+    }
 }
